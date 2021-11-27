@@ -274,6 +274,26 @@ func Run(ctx context.Context, actions ...Action) error {
 	return Tasks(actions).Do(cdp.WithExecutor(ctx, c.Target))
 }
 
+
+// 使用已有的browser运行
+func RunBrowser(ctx context.Context, browserCtx *Context, actions ...Action) error {
+	return Tasks(actions).Do(cdp.WithExecutor(ctx, browserCtx.Target))
+}
+
+// 准备一个浏览器
+func PrepareBrowserContext(ctx context.Context) (c *Context, err error) {
+	c, err = initContextBrowser(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if c.Target == nil {
+		if err = c.newTarget(ctx); err != nil {
+			return nil, err
+		}
+	}
+	return
+}
+
 func (c *Context) newTarget(ctx context.Context) error {
 	if c.targetID != "" {
 		if err := c.attachTarget(ctx, c.targetID); err != nil {
