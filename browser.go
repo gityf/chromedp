@@ -231,7 +231,7 @@ func (b *Browser) run(ctx context.Context) {
 
 	// incomingQueue is the queue of incoming target events, to be routed by
 	// their session ID.
-	incomingQueue := make(chan *cdproto.Message, 1)
+	incomingQueue := make(chan *cdproto.Message, 1024)
 
 	delTabQueue := make(chan target.SessionID, 1)
 
